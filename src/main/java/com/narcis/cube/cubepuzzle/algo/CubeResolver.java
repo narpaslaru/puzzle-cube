@@ -1,24 +1,23 @@
-/**
- * 
- */
 package com.narcis.cube.cubepuzzle.algo;
 
 import java.util.Arrays;
 import java.util.Stack;
 
 import com.narcis.cube.cubepuzzle.algo.Move.Direction;
+import org.springframework.stereotype.Component;
 
 /**
  * @author npaslaru
  *
  */
+@Component
 public class CubeResolver {
 	
 	public String findSolution(int[] cube) {
 		String error = validateCube(cube);
 		if ("OK".equals(error)) {
 			//proceed to fix the cube
-			Stack<Move> solution = new Stack<Move>();
+			Stack<Move> solution = new Stack<>();
 			int[][][] theCube = new int[3][3][3];
 			// first step - start with cube[0] = 1 and put it into theCube[0,0,0]
 			theCube[0][0][0] = cube[0];
