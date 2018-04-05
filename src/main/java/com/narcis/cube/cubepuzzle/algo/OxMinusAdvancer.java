@@ -10,7 +10,7 @@ public class OxMinusAdvancer implements Advancer {
     }
 
     @Override
-    public int advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
+    public Position advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
         int currentX = currentPosition.getX();
         int currentY = currentPosition.getY();
         int currentZ = currentPosition.getZ();
@@ -21,6 +21,6 @@ public class OxMinusAdvancer implements Advancer {
             theCube[currentX - 2][currentY][currentZ] = 1;
             newX -= 1;
         }
-        return newX;
+        return getPosition(newX, currentY, currentZ);
     }
 }

@@ -158,15 +158,13 @@ public class CubeResolver {
 		int newZ = currentZ;
 		switch (dirToGo) {
 		case OX_PLUS:
-			newX = advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_PLUS))
+			return advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_PLUS))
 					.findFirst().get().advance(theCube, numberOfElementsToAdd, currentPosition);
-			break;
 
 		case OX_MINUS:
-			newX = advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_MINUS))
+			return advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_MINUS))
 					.findFirst().get().advance(theCube, numberOfElementsToAdd, currentPosition);
-			break;
-			
+
 		case OY_PLUS:
 			theCube[currentX][currentY + 1][currentZ] = 1;
 			newY += 1;
