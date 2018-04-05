@@ -17,7 +17,7 @@ import java.io.PrintStream;
 public class CubeResolverTest {
 	private static int[] perfectCube = {1, 2, 2, 2, 2, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 2};
 	private static int[] perfectCubeReversed = {1, 2, 1 ,1 ,2, 1, 2, 1 ,1, 2 ,2, 1, 1 ,1, 2, 2, 2, 2};
-	private CubeResolver cubeResolver;
+	private static CubeResolver cubeResolver = new CubeResolver();
 
 	@Test
 	public void testBadCube() {
@@ -67,10 +67,8 @@ public class CubeResolverTest {
 	@Test
 	public void resolvesMultipleInputs() throws Exception {
 		cubeResolver.findSolution(perfectCube);
-		cubeResolver = new CubeResolver();
 		reinitPositions();
 		cubeResolver.findSolution(perfectCubeReversed);
-		cubeResolver = new CubeResolver();
 		reinitPositions();
 		cubeResolver.findSolution(perfectCube);
 	}
@@ -87,7 +85,6 @@ public class CubeResolverTest {
 
 	@Before
 	public void setUp() throws Exception {
-		cubeResolver = new CubeResolver();
 		reinitPositions();
 	}
 }
