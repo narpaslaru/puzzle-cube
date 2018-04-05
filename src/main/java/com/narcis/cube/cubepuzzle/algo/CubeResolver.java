@@ -17,9 +17,12 @@ public class CubeResolver {
 
 	private final List<CubeInvalidator> invalidators;
 
+	private final Advancer oxPlusAdvancer;
+
 	@Autowired
-	public CubeResolver(List<CubeInvalidator> invalidators) {
+	public CubeResolver(List<CubeInvalidator> invalidators, Advancer oxPlusAdvancer) {
 		this.invalidators = invalidators;
+		this.oxPlusAdvancer = oxPlusAdvancer;
 	}
 
 	public String findSolution(int[] cube) {
@@ -155,12 +158,7 @@ public class CubeResolver {
 		int newZ = currentZ;
 		switch (dirToGo) {
 		case OX_PLUS:
-			theCube[currentX + 1][currentY][currentZ] = 1;
-			newX += 1;
-			if (numberOfElementsToAdd == 2) {
-				theCube[currentX + 2][currentY][currentZ] = 1;
-				newX += 1;
-			}
+			newX = oxPlusAdvancer.advance(theCube, numberOfElementsToAdd, currentPosition);
 			break;
 
 		case OX_MINUS:
