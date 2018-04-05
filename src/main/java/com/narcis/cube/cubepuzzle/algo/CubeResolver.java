@@ -160,15 +160,6 @@ public class CubeResolver {
                     int newZ = currentZ;
                     switch (dirToGo) {
 
-                        case OZ_PLUS:
-                            theCube[currentX][currentY][currentZ + 1] = 1;
-                            newZ += 1;
-                            if (numberOfElementsToAdd == 2) {
-                                theCube[currentX][currentY][currentZ + 2] = 1;
-                                newZ += 1;
-                            }
-                            break;
-
                         case OZ_MINUS:
                             theCube[currentX][currentY][currentZ - 1] = 1;
                             newZ -= 1;
