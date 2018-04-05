@@ -156,27 +156,9 @@ public class CubeResolver {
                     int currentX = currentPosition.getX();
                     int currentY = currentPosition.getY();
                     int currentZ = currentPosition.getZ();
-                    int newX = currentX;
-                    int newY = currentY;
+					int newY = currentY;
                     int newZ = currentZ;
                     switch (dirToGo) {
-                        case OY_PLUS:
-                            theCube[currentX][currentY + 1][currentZ] = 1;
-                            newY += 1;
-                            if (numberOfElementsToAdd == 2) {
-                                theCube[currentX][currentY + 2][currentZ] = 1;
-                                newY += 1;
-                            }
-                            break;
-
-                        case OY_MINUS:
-                            theCube[currentX][currentY - 1][currentZ] = 1;
-                            newY -= 1;
-                            if (numberOfElementsToAdd == 2) {
-                                theCube[currentX][currentY - 2][currentZ] = 1;
-                                newY -= 1;
-                            }
-                            break;
 
                         case OZ_PLUS:
                             theCube[currentX][currentY][currentZ + 1] = 1;
@@ -199,7 +181,7 @@ public class CubeResolver {
                         default:
                             break;
                     }
-                    return getPosition(newX, newY, newZ);
+                    return getPosition(currentX, newY, newZ);
             });
 
 	}
