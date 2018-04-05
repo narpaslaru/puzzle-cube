@@ -150,61 +150,58 @@ public class CubeResolver {
 	// moves in the cube in one direction
 	private Position advance(int[][][] theCube, Position currentPosition, Direction dirToGo, int numberOfElementsToAdd, Stack<Move> solution) {
 		solution.push(new Move(numberOfElementsToAdd, dirToGo));
-		int currentX = currentPosition.getX();
-		int currentY = currentPosition.getY();
-		int currentZ = currentPosition.getZ();
-		int newX = currentX;
-		int newY = currentY;
-		int newZ = currentZ;
-		switch (dirToGo) {
-		case OX_PLUS:
-			return advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_PLUS))
-					.findFirst().get().advance(theCube, numberOfElementsToAdd, currentPosition);
+		return advancers.stream().filter(advancer -> advancer.towards().equals(dirToGo))
+                .findFirst().map(advancer -> advancer.advance(theCube, numberOfElementsToAdd, currentPosition))
+                .orElseGet(() -> {
+                    int currentX = currentPosition.getX();
+                    int currentY = currentPosition.getY();
+                    int currentZ = currentPosition.getZ();
+                    int newX = currentX;
+                    int newY = currentY;
+                    int newZ = currentZ;
+                    switch (dirToGo) {
+                        case OY_PLUS:
+                            theCube[currentX][currentY + 1][currentZ] = 1;
+                            newY += 1;
+                            if (numberOfElementsToAdd == 2) {
+                                theCube[currentX][currentY + 2][currentZ] = 1;
+                                newY += 1;
+                            }
+                            break;
 
-		case OX_MINUS:
-			return advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_MINUS))
-					.findFirst().get().advance(theCube, numberOfElementsToAdd, currentPosition);
+                        case OY_MINUS:
+                            theCube[currentX][currentY - 1][currentZ] = 1;
+                            newY -= 1;
+                            if (numberOfElementsToAdd == 2) {
+                                theCube[currentX][currentY - 2][currentZ] = 1;
+                                newY -= 1;
+                            }
+                            break;
 
-		case OY_PLUS:
-			theCube[currentX][currentY + 1][currentZ] = 1;
-			newY += 1;
-			if (numberOfElementsToAdd == 2) {
-				theCube[currentX][currentY + 2][currentZ] = 1;
-				newY += 1;
-			}
-			break;
-			
-		case OY_MINUS:
-			theCube[currentX][currentY - 1][currentZ] = 1;
-			newY -= 1;
-			if (numberOfElementsToAdd == 2) {
-				theCube[currentX][currentY - 2][currentZ] = 1;
-				newY -= 1;
-			}
-			break;
-			
-		case OZ_PLUS:
-			theCube[currentX][currentY][currentZ + 1] = 1;
-			newZ += 1;
-			if (numberOfElementsToAdd == 2) {
-				theCube[currentX][currentY][currentZ + 2] = 1;
-				newZ += 1;
-			}
-			break;
-			
-		case OZ_MINUS:
-			theCube[currentX][currentY][currentZ - 1] = 1;
-			newZ -= 1;
-			if (numberOfElementsToAdd == 2) {
-				theCube[currentX][currentY][currentZ - 2] = 1;
-				newZ -= 1;
-			}
-			break;
-			
-		default:
-			break;
-		}
-		return getPosition(newX, newY, newZ);
+                        case OZ_PLUS:
+                            theCube[currentX][currentY][currentZ + 1] = 1;
+                            newZ += 1;
+                            if (numberOfElementsToAdd == 2) {
+                                theCube[currentX][currentY][currentZ + 2] = 1;
+                                newZ += 1;
+                            }
+                            break;
+
+                        case OZ_MINUS:
+                            theCube[currentX][currentY][currentZ - 1] = 1;
+                            newZ -= 1;
+                            if (numberOfElementsToAdd == 2) {
+                                theCube[currentX][currentY][currentZ - 2] = 1;
+                                newZ -= 1;
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                    return getPosition(newX, newY, newZ);
+            });
+
 	}
 
 	private Position getPosition(int newX, int newY, int newZ) {
