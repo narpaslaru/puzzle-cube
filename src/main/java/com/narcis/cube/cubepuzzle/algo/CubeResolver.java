@@ -1,9 +1,11 @@
 package com.narcis.cube.cubepuzzle.algo;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 import com.narcis.cube.cubepuzzle.algo.Move.Direction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,7 +14,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CubeResolver {
-	
+
+	private final List<CubeInvalidator> invalidators;
+
+	@Autowired
+	public CubeResolver(List<CubeInvalidator> invalidators) {
+		this.invalidators = invalidators;
+	}
+
 	public String findSolution(int[] cube) {
 		String error = validateCube(cube);
 		if ("OK".equals(error)) {
@@ -354,24 +363,10 @@ public class CubeResolver {
 	}
 	
 	private String validateCube(int[] cube) {
-		// validate the cube - must not be null
-		if (cube == null) {
-			return "The cube should not be null";
-		}
-		if (cube.length == 0) {
-			return "The cube must not be empty";
-		}
-		if (cube[0] != 1) {
-			return "The cube must start with 1";
-		}
-		// only accept 1 and 2
-		if (Arrays.stream(cube).filter(i -> i == 1 || i == 2).count() != cube.length) {
-			return "The cube must only have 1 and 2 as emelents";
-		}
-		if (Arrays.stream(cube).sum() != 27) {
-			return "The cube must have 27 elements";
-		}
-		// validate the cube - sum must be 3x3x3 = 27
-		return "OK";
+		return invalidators.stream().filter(cubeInvalidator ->
+				cubeInvalidator.invalid(cube))
+				.map(CubeInvalidator::invalidMessage)
+				.findFirst()
+				.orElse("OK");
 	}
 }

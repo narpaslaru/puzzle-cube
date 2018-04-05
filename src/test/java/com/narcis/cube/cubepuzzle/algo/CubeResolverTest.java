@@ -1,10 +1,12 @@
 package com.narcis.cube.cubepuzzle.algo;
 
 
+import com.narcis.cube.cubepuzzle.CubePuzzleApplication;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -14,10 +16,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = CubePuzzleApplication.class)
 public class CubeResolverTest {
 	private static int[] perfectCube = {1, 2, 2, 2, 2, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 2};
 	private static int[] perfectCubeReversed = {1, 2, 1 ,1 ,2, 1, 2, 1 ,1, 2 ,2, 1, 1 ,1, 2, 2, 2, 2};
-	private static CubeResolver cubeResolver = new CubeResolver();
+	@Autowired
+	private CubeResolver cubeResolver;
 
 	@Test
 	public void testBadCube() {
