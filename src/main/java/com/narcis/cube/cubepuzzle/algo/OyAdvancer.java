@@ -21,13 +21,10 @@ public class OyAdvancer implements Advancer {
         int currentX = currentPosition.getX();
         int currentY = currentPosition.getY();
         int currentZ = currentPosition.getZ();
-        int newY = currentY;
-        theCube[currentX][sign.applyAsInt(currentY, 1)][currentZ] = 1;
-        newY = sign.applyAsInt(newY, 1);
-        if (numberOfElementsToAdd == 2) {
-            theCube[currentX][sign.applyAsInt(currentY, 2)][currentZ] = 1;
-            newY = sign.applyAsInt(newY, 1);
+        for (int i = 1; i <= numberOfElementsToAdd; i++) {
+            theCube[currentX][sign.applyAsInt(currentY, 1)][currentZ] = 1;
+            currentY = sign.applyAsInt(currentY, 1);
         }
-        return getPosition(currentX, newY, currentZ);
+        return getPosition(currentX, currentY, currentZ);
     }
 }
