@@ -17,12 +17,12 @@ public class CubeResolver {
 
 	private final List<CubeInvalidator> invalidators;
 
-	private final Advancer oxPlusAdvancer;
+	private final List<Advancer> advancers;
 
 	@Autowired
-	public CubeResolver(List<CubeInvalidator> invalidators, Advancer oxPlusAdvancer) {
+	public CubeResolver(List<CubeInvalidator> invalidators, List<Advancer> advancers) {
 		this.invalidators = invalidators;
-		this.oxPlusAdvancer = oxPlusAdvancer;
+		this.advancers = advancers;
 	}
 
 	public String findSolution(int[] cube) {
@@ -158,16 +158,13 @@ public class CubeResolver {
 		int newZ = currentZ;
 		switch (dirToGo) {
 		case OX_PLUS:
-			newX = oxPlusAdvancer.advance(theCube, numberOfElementsToAdd, currentPosition);
+			newX = advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_PLUS))
+					.findFirst().get().advance(theCube, numberOfElementsToAdd, currentPosition);
 			break;
 
 		case OX_MINUS:
-			theCube[currentX - 1][currentY][currentZ] = 1;
-			newX -= 1;
-			if (numberOfElementsToAdd == 2) {
-				theCube[currentX - 2][currentY][currentZ] = 1;
-				newX -= 1;
-			}			
+			newX = advancers.stream().filter(advancer -> advancer.towards().equals(Direction.OX_MINUS))
+					.findFirst().get().advance(theCube, numberOfElementsToAdd, currentPosition);
 			break;
 			
 		case OY_PLUS:
