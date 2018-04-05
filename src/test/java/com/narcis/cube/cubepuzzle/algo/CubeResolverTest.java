@@ -36,9 +36,7 @@ public class CubeResolverTest {
 
 	@Test
 	public void solvesPerfectCube() throws Exception {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		PrintStream output = new PrintStream(out);
-		System.setOut(output);
+        ByteArrayOutputStream out = redirectStandardOutput();
 
 		cubeResolver.findSolution(perfectCube);
 
@@ -63,6 +61,41 @@ public class CubeResolverTest {
 				", Move [steps=2, direction=OY_PLUS]\n" +
 				"]\n");
 	}
+
+    private ByteArrayOutputStream redirectStandardOutput() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(out);
+        System.setOut(output);
+        return out;
+    }
+
+    @Test
+    public void solvesPerfectCubeReversed() throws Exception {
+        ByteArrayOutputStream out = redirectStandardOutput();
+
+        cubeResolver.findSolution(perfectCubeReversed);
+
+        assertThat(out.toString("UTF-8")).isEqualToIgnoringNewLines(
+                "Solution: [Move [steps=1, direction=OX_PLUS]\n" +
+                        ", Move [steps=2, direction=OX_PLUS]\n" +
+                        ", Move [steps=1, direction=OY_PLUS]\n" +
+                        ", Move [steps=1, direction=OX_MINUS]\n" +
+                        ", Move [steps=2, direction=OZ_PLUS]\n" +
+                        ", Move [steps=1, direction=OY_PLUS]\n" +
+                        ", Move [steps=2, direction=OZ_MINUS]\n" +
+                        ", Move [steps=1, direction=OX_PLUS]\n" +
+                        ", Move [steps=1, direction=OZ_PLUS]\n" +
+                        ", Move [steps=2, direction=OY_MINUS]\n" +
+                        ", Move [steps=2, direction=OX_MINUS]\n" +
+                        ", Move [steps=1, direction=OY_PLUS]\n" +
+                        ", Move [steps=1, direction=OZ_MINUS]\n" +
+                        ", Move [steps=1, direction=OY_PLUS]\n" +
+                        ", Move [steps=2, direction=OZ_PLUS]\n" +
+                        ", Move [steps=2, direction=OY_MINUS]\n" +
+                        ", Move [steps=2, direction=OX_PLUS]\n" +
+                        ", Move [steps=2, direction=OY_PLUS]\n" +
+                        "]\n");
+    }
 
 	@Test
 	public void resolvesMultipleInputs() throws Exception {
