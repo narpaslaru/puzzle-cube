@@ -4,14 +4,16 @@ import java.util.function.IntBinaryOperator;
 
 public class OxAdvancer implements Advancer {
     private final IntBinaryOperator sign;
+    private final Move.Direction towards;
 
-    public OxAdvancer(IntBinaryOperator sign) {
+    public OxAdvancer(IntBinaryOperator sign, Move.Direction towards) {
         this.sign = sign;
+        this.towards = towards;
     }
 
     @Override
     public Move.Direction towards() {
-        return Move.Direction.OX_MINUS;
+        return towards;
     }
 
     @Override
