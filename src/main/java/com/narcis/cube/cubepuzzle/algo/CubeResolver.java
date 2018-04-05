@@ -152,28 +152,7 @@ public class CubeResolver {
 		solution.push(new Move(numberOfElementsToAdd, dirToGo));
 		return advancers.stream().filter(advancer -> advancer.towards().equals(dirToGo))
                 .findFirst().map(advancer -> advancer.advance(theCube, numberOfElementsToAdd, currentPosition))
-                .orElseGet(() -> {
-                    int currentX = currentPosition.getX();
-                    int currentY = currentPosition.getY();
-                    int currentZ = currentPosition.getZ();
-					int newY = currentY;
-                    int newZ = currentZ;
-                    switch (dirToGo) {
-
-                        case OZ_MINUS:
-                            theCube[currentX][currentY][currentZ - 1] = 1;
-                            newZ -= 1;
-                            if (numberOfElementsToAdd == 2) {
-                                theCube[currentX][currentY][currentZ - 2] = 1;
-                                newZ -= 1;
-                            }
-                            break;
-
-                        default:
-                            break;
-                    }
-                    return getPosition(currentX, newY, newZ);
-            });
+                .orElseGet(() -> getPosition(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()));
 
 	}
 
