@@ -22,15 +22,13 @@ public class OxAdvancer implements Advancer {
     @Override
     public Position advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
         int currentX = currentPosition.getX();
-        int currentY = currentPosition.getY();
-        int currentZ = currentPosition.getZ();
         int newX = currentX;
-        theCube[sign.applyAsInt(currentX, 1)][currentY][currentZ] = 1;
+        theCube[sign.applyAsInt(currentX, 1)][currentPosition.getY()][currentPosition.getZ()] = 1;
         newX = sign.applyAsInt(newX, 1);
         if (numberOfElementsToAdd == 2) {
-            theCube[sign.applyAsInt(currentX, 2)][currentY][currentZ] = 1;
+            theCube[sign.applyAsInt(currentX, 2)][currentPosition.getY()][currentPosition.getZ()] = 1;
             newX = sign.applyAsInt(newX, 1);
         }
-        return getPosition(newX, currentY, currentZ);
+        return getPosition(newX, currentPosition.getY(), currentPosition.getZ());
     }
 }

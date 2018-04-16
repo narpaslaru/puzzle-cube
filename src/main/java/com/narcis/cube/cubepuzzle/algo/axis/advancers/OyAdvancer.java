@@ -21,13 +21,11 @@ public class OyAdvancer implements Advancer {
 
     @Override
     public Position advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
-        int currentX = currentPosition.getX();
         int currentY = currentPosition.getY();
-        int currentZ = currentPosition.getZ();
         for (int i = 1; i <= numberOfElementsToAdd; i++) {
-            theCube[currentX][sign.applyAsInt(currentY, 1)][currentZ] = 1;
+            theCube[currentPosition.getX()][sign.applyAsInt(currentY, 1)][currentPosition.getZ()] = 1;
             currentY = sign.applyAsInt(currentY, 1);
         }
-        return getPosition(currentX, currentY, currentZ);
+        return getPosition(currentPosition.getX(), currentY, currentPosition.getZ());
     }
 }

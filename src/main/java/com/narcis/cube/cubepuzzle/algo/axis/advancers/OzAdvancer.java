@@ -21,16 +21,12 @@ public class OzAdvancer implements Advancer {
 
     @Override
     public Position advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
-        int currentX = currentPosition.getX();
-        int currentY = currentPosition.getY();
         int currentZ = currentPosition.getZ();
-        int newZ = currentZ;
-        theCube[currentX][currentY][sign.applyAsInt(currentZ, 1)] = 1;
-        newZ = sign.applyAsInt(newZ, 1);
-        if (numberOfElementsToAdd == 2) {
-            theCube[currentX][currentY][sign.applyAsInt(currentZ, 2)] = 1;
-            newZ = sign.applyAsInt(newZ, 1);
+        for (int i = 1; i <= numberOfElementsToAdd; i++) {
+            theCube[currentPosition.getX()][currentPosition.getY()][sign.applyAsInt(currentZ, 1)] = 1;
+            currentZ = sign.applyAsInt(currentZ, 1);
         }
-        return getPosition(currentX, currentY, newZ);
+
+        return getPosition(currentPosition.getX(), currentPosition.getY(), currentZ);
     }
 }
