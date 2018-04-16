@@ -1,4 +1,7 @@
-package com.narcis.cube.cubepuzzle.algo;
+package com.narcis.cube.cubepuzzle.algo.axis.advancers;
+
+import com.narcis.cube.cubepuzzle.algo.Move;
+import com.narcis.cube.cubepuzzle.algo.Position;
 
 import java.util.function.IntBinaryOperator;
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Stack;
 
 import com.narcis.cube.cubepuzzle.algo.Move.Direction;
+import com.narcis.cube.cubepuzzle.algo.axis.advancers.Advancer;
 import com.narcis.cube.cubepuzzle.algo.validators.CubeInvalidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
