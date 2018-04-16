@@ -1,18 +1,18 @@
-package com.narcis.cube.cubepuzzle.algo;
+package com.narcis.cube.cubepuzzle.algo.validators;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
-public class MustNotBeEmpty implements CubeInvalidator {
+@Order(0)
+public class MustNotBeNull implements CubeInvalidator {
     @Override
     public boolean invalid(int[] cube) {
-        return cube.length == 0;
+        return cube == null;
     }
 
     @Override
     public String invalidMessage() {
-        return "The cube must not be empty";
+        return "The cube should not be null";
     }
 }

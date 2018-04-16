@@ -1,4 +1,4 @@
-package com.narcis.cube.cubepuzzle.algo;
+package com.narcis.cube.cubepuzzle.algo.validators;
 
 import java.util.Arrays;
 import org.springframework.stereotype.Component;
