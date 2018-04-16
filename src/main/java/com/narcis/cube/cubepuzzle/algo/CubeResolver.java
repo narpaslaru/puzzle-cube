@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import com.narcis.cube.cubepuzzle.algo.Move.Direction;
 import com.narcis.cube.cubepuzzle.algo.axis.advancers.Advancer;
+import com.narcis.cube.cubepuzzle.algo.axis.backers.Backer;
 import com.narcis.cube.cubepuzzle.algo.validators.CubeInvalidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,10 +21,13 @@ public class CubeResolver {
 
 	private final List<Advancer> advancers;
 
+	private final List<Backer> backers;
+
 	@Autowired
-	public CubeResolver(List<CubeInvalidator> invalidators, List<Advancer> advancers) {
+	public CubeResolver(List<CubeInvalidator> invalidators, List<Advancer> advancers, List<Backer> backers) {
 		this.invalidators = invalidators;
 		this.advancers = advancers;
+		this.backers = backers;
 	}
 
 	public String findSolution(int[] cube) {
@@ -73,6 +77,15 @@ public class CubeResolver {
 		}
 	}
 
+	// moves in the cube in one direction
+	private Position advance(int[][][] theCube, Position currentPosition, Direction dirToGo, int numberOfElementsToAdd, Stack<Move> solution) {
+		solution.push(new Move(numberOfElementsToAdd, dirToGo));
+		return advancers.stream().filter(advancer -> advancer.towards().equals(dirToGo))
+                .findFirst().map(advancer -> advancer.advance(theCube, numberOfElementsToAdd, currentPosition))
+                .orElseGet(() -> getPosition(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()));
+
+	}
+
 	private Position goBack(int[][][] theCube, Position currentPosition, Stack<Move> solution) {
 		Move previousMove = solution.pop();
 		Direction dirToGoBack = previousMove.getDirection();
@@ -83,78 +96,69 @@ public class CubeResolver {
 		int newX = currentX;
 		int newY = currentY;
 		int newZ = currentZ;
-		
+
 		theCube[currentX][currentY][currentZ] = 0;
 		new Position(currentX, currentY, currentZ);
-		
-		switch (dirToGoBack) {
-		case OX_PLUS:
-			newX -= 1;
-			if (stepsToGoBackTo == 2) {
-				theCube[currentX - 1][currentY][currentZ] = 0;
-				new Position(currentX - 1, currentY, currentZ);
-				newX -= 1;
-			}
-			break;
 
-		case OX_MINUS:
-			newX += 1;
-			if (stepsToGoBackTo == 2) {
-				theCube[currentX + 1][currentY][currentZ] = 0;
-				new Position(currentX + 1, currentY, currentZ);
+		switch (dirToGoBack) {
+			case OX_PLUS:
+				newX -= 1;
+				if (stepsToGoBackTo == 2) {
+					theCube[currentX - 1][currentY][currentZ] = 0;
+					new Position(currentX - 1, currentY, currentZ);
+					newX -= 1;
+				}
+				break;
+
+			case OX_MINUS:
 				newX += 1;
-			}			
-			break;
-			
-		case OY_PLUS:
-			newY -= 1;
-			if (stepsToGoBackTo == 2) {
-				theCube[currentX][currentY - 1][currentZ] = 0;
-				new Position(currentX, currentY-1, currentZ);
+				if (stepsToGoBackTo == 2) {
+					theCube[currentX + 1][currentY][currentZ] = 0;
+					new Position(currentX + 1, currentY, currentZ);
+					newX += 1;
+				}
+				break;
+
+			case OY_PLUS:
 				newY -= 1;
-			}
-			break;
-			
-		case OY_MINUS:
-			newY += 1;
-			if (stepsToGoBackTo == 2) {
-				theCube[currentX][currentY + 1][currentZ] = 0;
-				new Position(currentX, currentY + 1, currentZ);
+				if (stepsToGoBackTo == 2) {
+					theCube[currentX][currentY - 1][currentZ] = 0;
+					new Position(currentX, currentY-1, currentZ);
+					newY -= 1;
+				}
+				break;
+
+			case OY_MINUS:
 				newY += 1;
-			}
-			break;
-			
-		case OZ_PLUS:
-			newZ -= 1;
-			if (stepsToGoBackTo == 2) {
-				theCube[currentX][currentY][currentZ - 1] = 0;
-				new Position(currentX, currentY, currentZ - 1);
+				if (stepsToGoBackTo == 2) {
+					theCube[currentX][currentY + 1][currentZ] = 0;
+					new Position(currentX, currentY + 1, currentZ);
+					newY += 1;
+				}
+				break;
+
+			case OZ_PLUS:
 				newZ -= 1;
-			}
-			break;
-			
-		case OZ_MINUS:
-			newZ += 1;
-			if (stepsToGoBackTo == 2) {
-				theCube[currentX][currentY][currentZ + 1] = 0;
-				new Position(currentX, currentY, currentZ + 1);
+				if (stepsToGoBackTo == 2) {
+					theCube[currentX][currentY][currentZ - 1] = 0;
+					new Position(currentX, currentY, currentZ - 1);
+					newZ -= 1;
+				}
+				break;
+
+			case OZ_MINUS:
 				newZ += 1;
-			}
-			break;
-			
-		default:
-			break;
+				if (stepsToGoBackTo == 2) {
+					theCube[currentX][currentY][currentZ + 1] = 0;
+					new Position(currentX, currentY, currentZ + 1);
+					newZ += 1;
+				}
+				break;
+
+			default:
+				break;
 		}
 		return getPosition(newX, newY, newZ);
-	}
-
-	// moves in the cube in one direction
-	private Position advance(int[][][] theCube, Position currentPosition, Direction dirToGo, int numberOfElementsToAdd, Stack<Move> solution) {
-		solution.push(new Move(numberOfElementsToAdd, dirToGo));
-		return advancers.stream().filter(advancer -> advancer.towards().equals(dirToGo))
-                .findFirst().map(advancer -> advancer.advance(theCube, numberOfElementsToAdd, currentPosition))
-                .orElseGet(() -> getPosition(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()));
-
 	}
 
 	private Position getPosition(int newX, int newY, int newZ) {
