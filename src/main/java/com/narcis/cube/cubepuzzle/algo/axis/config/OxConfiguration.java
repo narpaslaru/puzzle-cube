@@ -1,6 +1,8 @@
-package com.narcis.cube.cubepuzzle.algo.axis.advancers;
+package com.narcis.cube.cubepuzzle.algo.axis.config;
 
 import com.narcis.cube.cubepuzzle.algo.Move;
+import com.narcis.cube.cubepuzzle.algo.axis.advancers.Advancer;
+import com.narcis.cube.cubepuzzle.algo.axis.advancers.OxAdvancer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
