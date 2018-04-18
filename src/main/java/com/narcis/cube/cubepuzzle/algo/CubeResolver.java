@@ -97,9 +97,11 @@ public class CubeResolver {
 		int newY = currentY;
 		int newZ = currentZ;
 
+		// cleaning the current position that we are starting from
 		theCube[currentX][currentY][currentZ] = 0;
 		new Position(currentX, currentY, currentZ);
 
+		// continuing with the other positions
 		switch (dirToGoBack) {
 			case OX_PLUS:
 				newX -= 1;

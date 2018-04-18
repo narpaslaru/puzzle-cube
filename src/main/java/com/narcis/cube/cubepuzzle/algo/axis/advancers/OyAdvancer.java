@@ -4,12 +4,13 @@ import com.narcis.cube.cubepuzzle.algo.Move;
 import com.narcis.cube.cubepuzzle.algo.Position;
 
 import java.util.function.IntBinaryOperator;
+import java.util.function.IntFunction;
 
 public class OyAdvancer implements Advancer {
-    private final IntBinaryOperator sign;
+    private final IntFunction<Integer> sign;
     private final Move.Direction towards;
 
-    public OyAdvancer(IntBinaryOperator sign, Move.Direction towards) {
+    public OyAdvancer(IntFunction<Integer> sign, Move.Direction towards) {
         this.sign = sign;
         this.towards = towards;
     }
@@ -23,8 +24,8 @@ public class OyAdvancer implements Advancer {
     public Position advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
         int currentY = currentPosition.getY();
         for (int i = 1; i <= numberOfElementsToAdd; i++) {
-            theCube[currentPosition.getX()][sign.applyAsInt(currentY, 1)][currentPosition.getZ()] = 1;
-            currentY = sign.applyAsInt(currentY, 1);
+            theCube[currentPosition.getX()][sign.apply(currentY)][currentPosition.getZ()] = 1;
+            currentY = sign.apply(currentY);
         }
         return getPosition(currentPosition.getX(), currentY, currentPosition.getZ());
     }

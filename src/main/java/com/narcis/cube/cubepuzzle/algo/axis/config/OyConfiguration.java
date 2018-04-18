@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 public class OyConfiguration {
     @Bean
     Advancer oyPlusAdvancer() {
-        return new OyAdvancer(Integer::sum, Move.Direction.OY_PLUS);
+        return new OyAdvancer((x) -> ++x, Move.Direction.OY_PLUS);
     }
 
     @Bean
     Advancer oyMinusAdvancer() {
-        return new OyAdvancer((x, y) -> x - y, Move.Direction.OY_MINUS);
+        return new OyAdvancer((x) -> --x, Move.Direction.OY_MINUS);
     }
 }

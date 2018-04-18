@@ -4,12 +4,13 @@ import com.narcis.cube.cubepuzzle.algo.Move;
 import com.narcis.cube.cubepuzzle.algo.Position;
 
 import java.util.function.IntBinaryOperator;
+import java.util.function.IntFunction;
 
 public class OxAdvancer implements Advancer {
-    private final IntBinaryOperator sign;
+    private final IntFunction<Integer> sign;
     private final Move.Direction towards;
 
-    public OxAdvancer(IntBinaryOperator sign, Move.Direction towards) {
+    public OxAdvancer(IntFunction<Integer> sign, Move.Direction towards) {
         this.sign = sign;
         this.towards = towards;
     }
@@ -22,13 +23,10 @@ public class OxAdvancer implements Advancer {
     @Override
     public Position advance(int[][][] theCube, int numberOfElementsToAdd, Position currentPosition) {
         int currentX = currentPosition.getX();
-        int newX = currentX;
-        theCube[sign.applyAsInt(currentX, 1)][currentPosition.getY()][currentPosition.getZ()] = 1;
-        newX = sign.applyAsInt(newX, 1);
-        if (numberOfElementsToAdd == 2) {
-            theCube[sign.applyAsInt(currentX, 2)][currentPosition.getY()][currentPosition.getZ()] = 1;
-            newX = sign.applyAsInt(newX, 1);
+        for (int i = 1; i <= numberOfElementsToAdd; i++) {
+            theCube[sign.apply(currentX)][currentPosition.getY()][currentPosition.getZ()] = 1;
+            currentX = sign.apply(currentX);
         }
-        return getPosition(newX, currentPosition.getY(), currentPosition.getZ());
+        return getPosition(currentX, currentPosition.getY(), currentPosition.getZ());
     }
 }
